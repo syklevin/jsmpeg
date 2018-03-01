@@ -1,4 +1,4 @@
-JSMpeg.VideoElement = (function(){ "use strict";
+import Player from './player';
 
 var VideoElement = function(element) {	
 	var url = element.dataset.url;
@@ -56,7 +56,7 @@ var VideoElement = function(element) {
 	}
 
 	// Create the player instance
-	this.player = new JSMpeg.Player(url, options);
+	this.player = new Player(url, options);
 	element.playerInstance = this.player;
 
 	// Setup the poster element, if any
@@ -156,7 +156,11 @@ VideoElement.UNMUTE_BUTTON =
 		'</g>' +
 	'</svg>';
 
-return VideoElement;
+	export default VideoElement;
 
-})();
-
+	export function CreateVideoElements() {
+		var elements = document.querySelectorAll('.jsmpeg');
+		for (var i = 0; i < elements.length; i++) {
+			new VideoElement(elements[i]);
+		}
+	};

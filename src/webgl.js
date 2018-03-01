@@ -1,5 +1,3 @@
-JSMpeg.Renderer.WebGL = (function(){ "use strict";
-
 var WebGLRenderer = function(options) {
 	this.canvas = options.canvas || document.createElement('canvas');
 	this.width = this.canvas.width;
@@ -245,7 +243,5 @@ WebGLRenderer.SHADER = {
 	].join('\n')
 };
 
-return WebGLRenderer;
-
-})();
+export default WebGLRenderer;
 

@@ -1,7 +1,8 @@
-JSMpeg.Renderer.Canvas2D = (function(){ "use strict";
+import {fill} from './utils';
 
 var CanvasRenderer = function(options) {
 	this.canvas = options.canvas || document.createElement('canvas');
+	this.silence = options.disableGl && options.silence;
 	this.width = this.canvas.width;
 	this.height = this.canvas.height;
 	this.enabled = true;
@@ -21,7 +22,7 @@ CanvasRenderer.prototype.resize = function(width, height) {
 	this.canvas.height = this.height;
 
 	this.imageData = this.context.getImageData(0, 0, this.width, this.height);
-	JSMpeg.Fill(this.imageData.data, 255);
+	fill(this.imageData.data, 255);
 };
 
 CanvasRenderer.prototype.renderProgress = function(progress) {
@@ -38,7 +39,7 @@ CanvasRenderer.prototype.renderProgress = function(progress) {
 
 CanvasRenderer.prototype.render = function(y, cb, cr) {
 	this.YCbCrToRGBA(y, cb, cr, this.imageData.data);
-	this.context.putImageData(this.imageData, 0, 0);
+	if (!this.silence) this.context.putImageData(this.imageData, 0, 0);
 };
 
 CanvasRenderer.prototype.YCbCrToRGBA = function(y, cb, cr, rgba) {
@@ -112,8 +113,6 @@ CanvasRenderer.prototype.YCbCrToRGBA = function(y, cb, cr, rgba) {
 	}
 };
 
-return CanvasRenderer;
-
-})();
+export default CanvasRenderer;
 
 

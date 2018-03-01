@@ -1,4 +1,4 @@
-JSMpeg.AudioOutput.WebAudio = (function() { "use strict";
+import {now} from './utils';
 
 var WebAudioOut = function(options) {
 	this.context = WebAudioOut.CachedContext =
@@ -42,7 +42,7 @@ WebAudioOut.prototype.play = function(sampleRate, left, right) {
 	// If the context is not unlocked yet, we simply advance the start time
 	// to "fake" actually playing audio. This will keep the video in sync.
 	if (!this.unlocked) {
-		var ts = JSMpeg.Now()
+		var ts = now()
 		if (this.wallclockStartTime < ts) {
 			this.wallclockStartTime = ts;
 		}
@@ -61,11 +61,11 @@ WebAudioOut.prototype.play = function(sampleRate, left, right) {
 	source.buffer = buffer;
 	source.connect(this.destination);
 
-	var now = this.context.currentTime;
+	var ts = this.context.currentTime;
 	var duration = buffer.duration;
-	if (this.startTime < now) {
-		this.startTime = now;
-		this.wallclockStartTime = JSMpeg.Now();
+	if (this.startTime < ts) {
+		this.startTime = ts;
+		this.wallclockStartTime = now();
 	}
 
 	source.start(this.startTime);
@@ -84,12 +84,12 @@ WebAudioOut.prototype.stop = function() {
 WebAudioOut.prototype.getEnqueuedTime = function() {
 	// The AudioContext.currentTime is only updated every so often, so if we
 	// want to get exact timing, we need to rely on the system time.
-	return Math.max(this.wallclockStartTime - JSMpeg.Now(), 0)
+	return Math.max(this.wallclockStartTime - now(), 0)
 };
 
 WebAudioOut.prototype.resetEnqueuedTime = function() {
 	this.startTime = this.context.currentTime;
-	this.wallclockStartTime = JSMpeg.Now();
+	this.wallclockStartTime = now();
 };
 
 WebAudioOut.prototype.unlock = function(callback) {
@@ -139,7 +139,5 @@ WebAudioOut.IsSupported = function() {
 
 WebAudioOut.CachedContext = null;
 
-return WebAudioOut;
-
-})();
+export default WebAudioOut;
 

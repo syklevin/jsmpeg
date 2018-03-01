@@ -1,5 +1,3 @@
-JSMpeg.Source.WebSocket = (function(){ "use strict";
-
 var WSSource = function(url, options) {
 	this.url = url;
 	this.options = options;
@@ -35,7 +33,7 @@ WSSource.prototype.start = function() {
 	this.progress = 0;
 	this.established = false;
 	
-	this.socket = new WebSocket(this.url, this.options.protocols || null);
+	this.socket = new WebSocket(this.url, this.options.protocols);
 	this.socket.binaryType = 'arraybuffer';
 	this.socket.onmessage = this.onMessage.bind(this);
 	this.socket.onopen = this.onOpen.bind(this);
@@ -67,7 +65,5 @@ WSSource.prototype.onMessage = function(ev) {
 	}
 };
 
-return WSSource;
-
-})();
+export default WSSource;
 

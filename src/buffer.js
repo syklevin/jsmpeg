@@ -1,5 +1,3 @@
-JSMpeg.BitBuffer = (function(){ "use strict";
-
 var BitBuffer = function(bufferOrLength, mode) {
 	if (typeof(bufferOrLength) === 'object') {
 		this.bytes = (bufferOrLength instanceof Uint8Array)
@@ -189,8 +187,6 @@ BitBuffer.MODE = {
 	EXPAND: 2
 };
 
-return BitBuffer;
-
-})();
+export default BitBuffer;
 
 

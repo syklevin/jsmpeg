@@ -1,4 +1,4 @@
-JSMpeg.Source.AjaxProgressive = (function(){ "use strict";
+import {now} from './utils';
 
 var AjaxProgressiveSource = function(url, options) {
 	this.url = url;
@@ -68,7 +68,7 @@ AjaxProgressiveSource.prototype.loadNextChunk = function() {
 	}
 	
 	this.isLoading = true;
-	this.loadStartTime = JSMpeg.Now();
+	this.loadStartTime = now();
 	this.request = new XMLHttpRequest();
 
 	this.request.onreadystatechange = function() {		
@@ -111,14 +111,12 @@ AjaxProgressiveSource.prototype.onChunkLoad = function(data) {
 		this.destination.write(data);
 	}
 
-	this.loadTime = JSMpeg.Now() - this.loadStartTime;
+	this.loadTime = now() - this.loadStartTime;
 	if (!this.throttled) {
 		this.loadNextChunk();
 	}
 };
 
-return AjaxProgressiveSource;
-
-})();
+export default AjaxProgressiveSource;
 
 
