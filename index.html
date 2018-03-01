@@ -26,7 +26,13 @@
 
 		var canvas = document.getElementById('video-canvas');
 		var url = 'ws://' + streamDomain + '/mpts?app=helios&stream=ba1&sid=123456'
+		var url2 = 'ws://' + streamDomain + '/mpts?app=helios&stream=ba2&sid=123456'
 		var player = new mpts.Player(url, {canvas: canvas});
+
+		setTimeout(function(){
+			player.switch(url2)
+		}, 10000);
+
 	</script>
 </body>
 </html>

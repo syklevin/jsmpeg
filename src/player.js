@@ -11,7 +11,11 @@ import {now} from './utils';
 
 var Player = function(url, options) {
 	this.options = options || {};
+	this.init(url)
+};
 
+Player.prototype.init = function(url) {
+	var options = this.options
 	if (options.source) {
 		this.source = new options.source(url, options);
 		options.streaming = !!this.source.streaming;
@@ -71,7 +75,7 @@ var Player = function(url, options) {
 	if (this.autoplay) {
 		this.play();
 	}
-};
+}
 
 Player.prototype.showHide = function(ev) {
 	if (document.visibilityState === 'hidden') {
@@ -100,6 +104,11 @@ Player.prototype.pause = function(ev) {
 		this.seek(this.currentTime);
 	}
 };
+
+Player.prototype.switch = function(url) {
+	this.destroy()
+	this.init(url)
+}
 
 Player.prototype.getVolume = function() {
 	return this.audioOut ? this.audioOut.volume : 0;
