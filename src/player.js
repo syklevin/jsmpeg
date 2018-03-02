@@ -1,5 +1,6 @@
 import WebSocket from './websocket';
 import AjaxProgressive from './ajax-progressive';
+import AjaxChunks from './ajax-chunks';
 import Ajax from './ajax';
 import TS from './ts';
 import MPEG1Video from './mpeg1';
@@ -22,6 +23,10 @@ Player.prototype.init = function(url) {
 	}
 	else if (url.match(/^wss?:\/\//)) {
 		this.source = new WebSocket(url, options);
+		options.streaming = true;
+	}
+	else if (options.chunks) {
+		this.source = new AjaxChunks(url, options);
 		options.streaming = true;
 	}
 	else if (options.progressive !== false) {
