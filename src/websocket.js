@@ -29,11 +29,11 @@ WSSource.prototype.destroy = function() {
 };
 
 WSSource.prototype.start = function() {
+	var WebSocketCls = WebSocket || MozWebSocket;
 	this.shouldAttemptReconnect = !!this.reconnectInterval;
 	this.progress = 0;
 	this.established = false;
-	
-	this.socket = new WebSocket(this.url, this.options.protocols);
+	this.socket = this.options.protocols ? new WebSocketCls(this.url, this.options.protocols) : new WebSocketCls(this.url);
 	this.socket.binaryType = 'arraybuffer';
 	this.socket.onmessage = this.onMessage.bind(this);
 	this.socket.onopen = this.onOpen.bind(this);
@@ -61,6 +61,7 @@ WSSource.prototype.onClose = function() {
 
 WSSource.prototype.onMessage = function(ev) {
 	if (this.destination) {
+		// var ba = new Uint8Array(ev.data)
 		this.destination.write(ev.data);
 	}
 };

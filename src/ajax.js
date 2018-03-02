@@ -25,7 +25,7 @@ AjaxSource.prototype.start = function() {
 	}.bind(this);
 
 	this.request.onprogress = this.onProgress.bind(this);
-	this.request.open('GET', this.url);
+	this.request.open('POST', this.url);
 	this.request.responseType = "arraybuffer";
 	this.request.send();
 };
