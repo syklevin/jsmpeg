@@ -4,18 +4,35 @@ import filesize from "rollup-plugin-filesize"
 
 import pkg from "./package.json"
 
+const input = "./src/index.js"
+
+const babelPlugin = babel({
+  exclude: "node_modules/**"
+})
+
+
 export default [
   {
-    input: "./src/index.js",
+    input: input,
+    external: [],
+    output: [
+      { file: pkg.main, format: "cjs" },
+      { file: pkg.module, format: "es" }
+    ],
+    plugins: [
+      babelPlugin,
+      filesize()
+    ]
+  },
+  {
+    input: input,
     output: {
-      file: pkg.main,
+      file: pkg.browser,
       format: "umd",
       name: "mpts"
     },
     plugins: [
-      babel({
-        exclude: "node_modules/**"
-      }),
+      babelPlugin,
       uglify(),
       filesize()
     ]

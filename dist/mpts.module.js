@@ -1,5 +1,3 @@
-'use strict';
-
 var WSSource = function WSSource(url, options) {
 	this.url = url;
 	this.options = options;
@@ -3515,4 +3513,4 @@ var index = {
   CreateVideoElements: CreateVideoElements
 };
 
-module.exports = index;
+export default index;
