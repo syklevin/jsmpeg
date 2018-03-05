@@ -5,6 +5,7 @@
   "main": "dist/mpts.js",
   "module": "dist/mpts.module.js",
   "browser": "dist/mpts.min.js",
+  "typings": "mpts.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webserver": "http-server -p 6633",

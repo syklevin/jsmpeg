@@ -25,7 +25,7 @@ Player.prototype.init = function(url) {
 	}
 	else {
 		this.source = new Ajax(url, options);
-		options.streaming = true;
+		options.streaming = false;
 	}
 
 	this.maxAudioLag = options.maxAudioLag || 0.25;

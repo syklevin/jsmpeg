@@ -3139,7 +3139,7 @@ Player.prototype.init = function (url) {
 		options.streaming = true;
 	} else {
 		this.source = new AjaxSource(url, options);
-		options.streaming = true;
+		options.streaming = false;
 	}
 
 	this.maxAudioLag = options.maxAudioLag || 0.25;
