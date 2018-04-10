@@ -3055,8 +3055,14 @@ WebAudioOut.prototype.play = function (sampleRate, left, right) {
 		this.startTime = ts;
 		this.wallclockStartTime = now();
 	}
-
-	source.start(this.startTime);
+	if (source.start) {
+		source.start(this.startTime);
+	} else if (source.noteOn) {
+		source.noteOn(this.startTime);
+	} else {
+		
+	}
+	// source.start(this.startTime);
 	this.startTime += duration;
 	this.wallclockStartTime += duration;
 };
@@ -3095,7 +3101,18 @@ WebAudioOut.prototype.unlock = function (callback) {
 	var source = this.context.createBufferSource();
 	source.buffer = buffer;
 	source.connect(this.destination);
-	source.start(0);
+	if (source.start) {
+		source.start(0);
+	} else if (source.noteOn) {
+		source.noteOn(0);
+	} else {
+		
+	}
+
+	//For Android Chrome >=55, a gesture is needed for unlock WebAudio for cross origin iframe.
+	if (source.context.state === 'suspended') {
+		source.context.resume();
+	}
 
 	setTimeout(this.checkIfUnlocked.bind(this, source, 0), 0);
 };
@@ -3237,8 +3254,12 @@ Player.prototype.stop = function (ev) {
 Player.prototype.destroy = function () {
 	this.pause();
 	this.source.destroy();
-	this.renderer.destroy();
-	this.audioOut.destroy();
+	if (this.renderer) {
+		this.renderer.destroy();
+	}
+	if (this.audioOut) {
+		this.audioOut.destroy();
+	}
 };
 
 Player.prototype.seek = function (time) {

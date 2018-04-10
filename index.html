@@ -11,8 +11,10 @@
 	</style>
 </head>
 <body>
-	<canvas id="video-canvas"></canvas>
-	<script type="text/javascript" src="dist/mpts.min.js"></script>
+	<div id="video-container">
+			<canvas id="video-canvas"></div>
+	</div>
+	<script type="text/javascript" src="dist/mpts.min.js?t=1234567"></script>
 	<script type="text/javascript">
 
 		var qsParams = (function() {
@@ -24,15 +26,31 @@
 
 		var streamDomain = qsParams['domain'] || document.location.host
 		var streamName = qsParams['stream'] || 'ba1'
-
+		
 		var canvas = document.getElementById('video-canvas');
 		//var url = 'ws://' + streamDomain + '/mpts?app=helios&stream=ba1&sid=123456'
 		var url = 'ws://' + streamDomain + '/mpts?app=helios&stream='+streamName+'&sid=123456'
-
+		url = 'ws://ws.3kmm.net:80/'
 		console.info(url)
 		var player = new mpts.Player(url, {
 			canvas: canvas
 		});
+
+		if (player.audioOut && !player.audioOut.unlocked) {
+			var container = document.getElementById('video-container');
+			var onUnlockAudio = function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				console.log("touch onUnlockAudio")
+				player.audioOut.unlock(function(){
+					console.log("done onUnlockAudio")
+					container.removeEventListener('touchstart', onUnlockAudio);
+					container.removeEventListener('click', onUnlockAudio);
+				});
+			};
+			container.addEventListener('touchstart', onUnlockAudio);
+			container.addEventListener('click', onUnlockAudio);
+		}
 
 		// setTimeout(function(){
 		// 	player.switch(url2)

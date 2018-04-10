@@ -126,8 +126,12 @@ Player.prototype.stop = function(ev) {
 Player.prototype.destroy = function() {
 	this.pause();
 	this.source.destroy();
-	this.renderer.destroy();
-	this.audioOut.destroy();
+	if (this.renderer) {
+		this.renderer.destroy();
+	}
+	if (this.audioOut) {
+		this.audioOut.destroy();
+	}
 };
 
 Player.prototype.seek = function(time) {
